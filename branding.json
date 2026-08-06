@@ -1,0 +1,14 @@
+{
+  "appName": "AWS SSO Manager",
+  "appId": "com.example.aws-sso-manager",
+  "idpLabel": "SSO",
+  "companyName": "",
+  "supportUrl": "",
+  "icon": "branding/icon.png",
+  "defaults": {
+    "sessionName": "",
+    "startUrl": "",
+    "ssoRegion": "",
+    "regionPresets": ["eu-central-1", "eu-west-1", "us-east-1"]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "aws-sso-manager",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Desktop manager for AWS IAM Identity Center (SSO) CLI profiles — sign in once, pick accounts/roles, and use the AWS CLI in any terminal.",
+  "license": "MIT",
+  "author": "Tomas Bublik",
+  "type": "module",
+  "scripts": {
+    "brand": "node scripts/gen-branding.mjs",
+    "predev": "npm run brand",
+    "dev": "vite",
+    "prebuild": "npm run brand",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "@tauri-apps/cli": "^2"
+  }
+}
