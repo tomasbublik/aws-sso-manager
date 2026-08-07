@@ -103,9 +103,37 @@ fn require_session(text: &str) -> Result<awsconfig::SsoSessionInfo, String> {
         .ok_or_else(|| "No SSO session configured yet. Please complete setup first.".to_string())
 }
 
+/// Extra directories to add to PATH when the app is launched as a macOS .app
+/// bundle (which inherits a minimal system PATH that excludes Homebrew, etc.).
+#[cfg(target_os = "macos")]
+const EXTRA_PATH_DIRS: &[&str] = &[
+    "/opt/homebrew/bin",
+    "/opt/homebrew/sbin",
+    "/usr/local/bin",
+];
+
+/// Build an augmented PATH that includes common macOS install locations.
+/// Returns the original PATH unchanged on non-macOS platforms.
+fn augmented_path() -> String {
+    let current = std::env::var("PATH").unwrap_or_default();
+    #[cfg(target_os = "macos")]
+    {
+        let mut parts: Vec<&str> = current.split(':').collect();
+        for dir in EXTRA_PATH_DIRS {
+            if !parts.contains(dir) && std::path::Path::new(dir).is_dir() {
+                parts.push(dir);
+            }
+        }
+        return parts.join(":");
+    }
+    #[cfg(not(target_os = "macos"))]
+    current
+}
+
 fn run_check_cli() -> CliStatus {
     let mut cmd = std::process::Command::new("aws");
     cmd.arg("--version");
+    cmd.env("PATH", augmented_path());
     #[cfg(windows)]
     {
         use std::os::windows::process::CommandExt;
