@@ -209,13 +209,22 @@ pub async fn sso_login_start(
     let session_info = require_session(&text)?;
     let session = SsoSession::from(&session_info);
 
-    let auth = sso::oidc::start_device_authorization(&session)
+    let mut auth = sso::oidc::start_device_authorization(&session)
         .await
         .map_err(String::from)?;
 
-    let _ = app
-        .opener()
-        .open_url(&auth.verification_uri_complete, None::<String>);
+    let url = auth.verification_uri_complete.clone();
+    let windows_browser = tauri::async_runtime::spawn_blocking(move || {
+        crate::browser::try_windows_browser(&url)
+    })
+    .await
+    .unwrap_or_default();
+    auth.wslview_missing = windows_browser.wslview_missing;
+    auth.browser_opened = windows_browser.opened
+        || app
+            .opener()
+            .open_url(&auth.verification_uri_complete, None::<String>)
+            .is_ok();
 
     let cancel = Arc::new(AtomicBool::new(false));
     {

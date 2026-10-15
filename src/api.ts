@@ -26,6 +26,8 @@ export interface LoginPrompt {
   userCode: string;
   verificationUri: string;
   verificationUriComplete: string;
+  browserOpened: boolean;
+  wslviewMissing: boolean;
 }
 
 export interface AccountInfo {

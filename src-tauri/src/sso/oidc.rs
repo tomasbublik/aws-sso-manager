@@ -37,6 +37,8 @@ pub struct DeviceAuthorization {
     pub user_code: String,
     pub verification_uri: String,
     pub verification_uri_complete: String,
+    pub browser_opened: bool,
+    pub wslview_missing: bool,
     #[serde(skip)]
     pub device_code: String,
     #[serde(skip)]
@@ -139,6 +141,8 @@ pub async fn start_device_authorization(session: &SsoSession) -> AppResult<Devic
         user_code: resp.user_code().unwrap_or_default().to_string(),
         verification_uri: resp.verification_uri().unwrap_or_default().to_string(),
         verification_uri_complete: resp.verification_uri_complete().unwrap_or_default().to_string(),
+        browser_opened: false,
+        wslview_missing: false,
         device_code: resp.device_code().unwrap_or_default().to_string(),
         interval_seconds: resp.interval().max(1) as u64,
         expires_in_seconds: resp.expires_in().max(30) as u64,

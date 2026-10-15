@@ -1,5 +1,6 @@
 pub mod awsconfig;
 pub mod branding;
+mod browser;
 pub mod commands;
 pub mod discovery;
 pub mod error;
