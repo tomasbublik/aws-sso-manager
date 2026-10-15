@@ -73,10 +73,20 @@ export function LoginScreen({ sessionName, onSuccess, onError }: LoginScreenProp
             <>
               <div className="user-code-box">{prompt.userCode}</div>
               <p className="help-text">
-                Browser didn't open? Go to{" "}
+                {prompt.browserOpened
+                  ? "Browser didn't open? Go to "
+                  : "Could not open your browser automatically. Go to "}
                 <span className="mono">{prompt.verificationUri}</span> and
                 enter the code above.
               </p>
+              {prompt.wslviewMissing && (
+                <p className="help-text" role="status">
+                  WSL detected, but wslview was not found. Install wslu in your
+                  WSL distribution and ensure wslview is on the app's PATH to
+                  open sign-in links in your Windows browser. You can still
+                  sign in now using the link and code above.
+                </p>
+              )}
             </>
           )}
           <Spinner label="Waiting for confirmation in your browser…" />
